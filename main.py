@@ -6,7 +6,7 @@ from torch.utils.tensorboard import SummaryWriter
 # ---- some info below ----
 
 # ! modify according to your device
-device = torch.device("mps")
+device = torch.device("cuda")
     #  = d2l.try_gpu() 
 
 pretrained_net = torchvision.models.vgg19(pretrained=True)
