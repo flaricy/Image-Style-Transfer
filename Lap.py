@@ -48,6 +48,7 @@ def postprocess(img):
     将img转为PILImage格式
     """
     img = img[0].to(RGB_STD.device)
+    img = torchvision.transforms.Resize(Content_Size)(img)
     img = torch.clamp(img.permute(1, 2, 0) * RGB_STD + RGB_MEAN, 0, 1)
     return torchvision.transforms.ToPILImage()(img.permute(2, 0, 1))
 
@@ -174,7 +175,7 @@ def lap_loss(lap_Y, lap_Y_hat):
     return torch.sum(torch.square(lap_Y - lap_Y_hat))
 
 # ! hyper_param
-content_weight, style_weight, tv_weight, lap_weight = 8, 3500, 0, 100
+content_weight, style_weight, tv_weight, lap_weight = 8, 3500, 0, 0
 
 
 def compute_loss(X, contents_Y_hat, styles_Y_hat, contents_Y_, styles_Y_gram, lap_Y_, lap_Y_hat):
@@ -312,7 +313,7 @@ Incomplete_CNN = Incomplete_CNN.to(DEVICE)
 Content_Path = "./images/"
 Content_Name = "Alps"
 Style_Path = './styles/'
-Style_Name = "starry"
+Style_Name = "Kandinsky"
 
 d2l.set_figsize()
 Content_Img = d2l.Image.open(Content_Path + Content_Name + '.jpeg').convert("RGB")
@@ -322,7 +323,7 @@ Style_Img = d2l.Image.open(Style_Path + Style_Name + '.jpeg')
 Content_X, Content_Y, Lap_Y = get_contents(IMAGE_SHAPE, DEVICE)
 _, Style_Y = get_styles(IMAGE_SHAPE, DEVICE)
 
-Output = train(Content_X, Content_Y, Style_Y, DEVICE, 0.8, 1000, 25)
+Output = train(Content_X, Content_Y, Style_Y, DEVICE, 0.8, 200, 25)
 
 Output_Img = postprocess(Output)
-Output_Img.save(f'./results/{Content_Name + "-" + Style_Name}_lap_r3.jpeg', 'JPEG')
+Output_Img.save(f'./results/{Content_Name + "-" + Style_Name}_gatys.jpeg', 'JPEG')
