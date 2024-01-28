@@ -51,5 +51,5 @@ If you want to check the changing process of the loss function or the synthetic 
 tensorboard --logdir=runs
 ```
 
-Paste the url shown in the shell (usually it is ` http://localhost:6006/ `) and you can see the visual result.
+Paste the url shown in the shell (usually it is ` http://localhost:6006/ `) into your browser and you can see the visual result.
 
